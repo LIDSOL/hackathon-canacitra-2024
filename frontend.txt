@@ -3,9 +3,22 @@ NOTES HACKATON
 Elementos de frontend:
 
 - interfaz de login
-- interfaz de registo de ruta
-- interfaz de rutas guardadas
-- interfaz de notificaciones
+- rutas:
+    - interfaz de registo de ruta
+    - interfaz de rutas guardadas
+- rutas recientes
 - interfaz para mostrar ruta
+    - mapa con ruta específica
 - interfaz de configuración
+    - aspecto
+        - tema bright/dark
+    - perfil
+        - foto
+        - username
+        - correo
+        - contraseña
+    - notificaciones
+        - on/off
+    - privacidad
+        - localización
 - interfaz de eventos

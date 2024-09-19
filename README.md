@@ -1,4 +1,4 @@
-# Hackathon CANACITRA 2024
+# Hackathon CANACINTRA 2024
 
 ## Reglas de negocio
 
@@ -6,9 +6,20 @@ Existe una serie de usuarios que se traslada a través de distintos puntos de la
 
 Cada usuario cuenta con una serie de orígenes y destinos que suele repetir cotidianamente en horarios específicos. Estas rutas son comunes entre los usuarios. Existen orígenes y destinos que son mas comunes que otros. Del usuario debemos conocer su nombre de usuario, correo electrónico (para notificarlo de posibles contra tiempos), orígenes y destinos comunes.
 
-El sistema de metro cuenta con diversas líneas que se conectan entre sí por medio de conexiones. Cada línea cuenta con una serie de estaciones. Cada estación tiene un tiempo de traslado a la siguiente estación. Cada línea tiene un tiempo de traslado entre estaciones. Cada linea cuenta con un nivel de congestión que indica la cantidad de personas que se encuentran en la línea.
+El sistema de metro cuenta con diversas líneas que se conectan entre sí por medio de conexiones. Cada línea cuenta con una serie de estaciones. Cada estación tiene un tiempo de traslado a la siguiente estación. Cada línea tiene un tiempo de traslado entre estaciones.
 
 El sistema de metro cuenta con una serie de eventos que pueden afectar el tiempo de traslado entre estaciones. Estos eventos pueden ser manifestaciones, problemas técnicos, etc. Cada evento tiene un tiempo de duración y una serie de estación afectadas, incluso toda la linea, además de una popularidad que indica la cantidad de personas que han notificado el evento.
+
+Existen diferentes tipos de eventos, el tipo de evento asignado será un indicador del alcance del mismo, es decir: la magnitud de contratiempo que cause y su duración.
+
+Los tipo de evento son:
+
+- Cierre
+- Avería
+- Siniestro
+- Congestión
+- Manifestación
+- Otro
 
 El sistema debe notificar a los usuarios de posibles eventos que puedan afectar su tiempo de traslado. El sistema debe notificar a los usuarios de posibles rutas alternas que puedan tomar para llegar a su destino. Los usuarios pueden notificar de eventos que estén ocurriendo en el sistema de metro para que otros usuarios sean notificados a través de un sistema de popularidad. En caso de que los eventos sean públicos con anterioridad, el sistema debe notificar a los usuarios que comúnmente toman rutas que se vean afectadas por el evento.
 
@@ -68,7 +79,6 @@ El sistema debe notificar a los usuarios de posibles eventos que puedan afectar 
 - Nombre
 - Línea
 - Ubicación
-- Congestión
 
 ### Línea
 

@@ -2,7 +2,7 @@ import streamlit as st
 
 # Hardcoded user credentials (you can replace this with a database or a more secure method)
 valid_username = "admin"
-valid_password = "password"
+valid_password = "admin"
 
 st.markdown("""
     <style>
@@ -40,8 +40,9 @@ def login_page():
     # Button to handle login
     if st.button("Login"):
         if login(username, password):
-            st.success("Login successful!")
+            st.sidebar.success("Logged in!")
             st.write("Welcome, " + username + "!")
+            st.session_state['page'] = 'main_page'
         else:
             st.error("Invalid username or password")
     

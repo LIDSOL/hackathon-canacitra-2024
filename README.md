@@ -2,7 +2,7 @@
 
 ## Problema
 
-Existen muchos eventos al día a día que son imbredecibles o inesperados, esto incluye cuestiones climáticas, geográficas, sociales y  catastróficas. Para la población mexicana son frecuentes estos sucesos que afectan de forma colectiva como individual en materia de transporte, lo cual afecta en la pérdida de tiempo y dinero, repercutiendo en la economía necional, empresarial o individual.
+Existen muchos eventos al día a día que son impredecibles o inesperados, esto incluye cuestiones climáticas, geográficas, sociales y  catastróficas. Para la población mexicana son frecuentes estos sucesos que afectan de forma colectiva como individual en materia de transporte, lo cual afecta en la pérdida de tiempo y dinero, repercutiendo en la economía nacional, empresarial o individual.
 
 ## Reglas de negocio
 
@@ -149,7 +149,7 @@ Es una experiencia personalizada, específica y preventiva hacia un usuario, que
 
 #### ¿Cómo probamos la solución con los clientes y medimos el éxito?
 
-La idea principal es, de manera estadística, utilizar los datos del usuario para comparar la efectividad de las rutas alternativas propuestas con respecto al tiempo aprovechado contra el tiempo perdido en una ruta con impedimentos en el camino. De manera simultanea buscamos preguntar al cliente por medio de encuestas sobre la experiencia de la ruta alternativa.
+La idea principal es, de manera estadística, utilizar los datos del usuario para comparar la efectividad de las rutas alternativas propuestas con respecto al tiempo aprovechado contra el tiempo perdido en una ruta con impedimentos en el camino. De manera simultánea buscamos preguntar al cliente por medio de encuestas sobre la experiencia de la ruta alternativa.
 
 ### Palabras clave
 

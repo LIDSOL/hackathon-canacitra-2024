@@ -1,8 +1,12 @@
 # Hackathon CANACINTRA 2024
 
+## Problema
+
+Existen muchos eventos al día a día que son imbredecibles o inesperados, esto incluye cuestiones climáticas, geográficas, sociales y  catastróficas. Para la población mexicana son frecuentes estos sucesos que afectan de forma colectiva como individual en materia de transporte, lo cual afecta en la pérdida de tiempo y dinero, repercutiendo en la economía necional, empresarial o individual.
+
 ## Reglas de negocio
 
-Existe una serie de usuarios que se traslada a través de distintos puntos de la ciudad. Estos usuarios tienen una serie de rutas comunes que realizan a diario. El tiempo de traslado de un punto a otro es variable y no siempre es posible predecirlo debido a las manifestaciones, problemas en el servicio de transporte, etc.
+Para esto hay que tener en cuenta lo siguiente:
 
 Cada usuario cuenta con una serie de orígenes y destinos que suele repetir cotidianamente en horarios específicos. Estas rutas son comunes entre los usuarios. Existen orígenes y destinos que son mas comunes que otros. Del usuario debemos conocer su nombre de usuario, correo electrónico (para notificarlo de posibles contra tiempos), orígenes y destinos comunes.
 
@@ -22,7 +26,6 @@ Los tipo de evento son:
 - Otro
 
 El sistema debe notificar a los usuarios de posibles eventos que puedan afectar su tiempo de traslado. El sistema debe notificar a los usuarios de posibles rutas alternas que puedan tomar para llegar a su destino. Los usuarios pueden notificar de eventos que estén ocurriendo en el sistema de metro para que otros usuarios sean notificados a través de un sistema de popularidad. En caso de que los eventos sean públicos con anterioridad, el sistema debe notificar a los usuarios que comúnmente toman rutas que se vean afectadas por el evento.
-
 
 ## Requerimientos funcionales
 
@@ -130,29 +133,29 @@ classDiagram
 
 #### ¿Quiénes son los usuarios? ¿Que sabe de ellos?
 
-Los usuarios son personas que se trasladan a través de la ciudad. Sabemos su nombre de usuario, correo electrónico, rutas comunes y eventos notificados.
+Son aquellos usuarios que frecuentan el sistema colectivo de transporte de la CDMX en específico del metro. Sabemos que buscan una facilidad de transporte efectivo, es decir, un transporte rápido, cómodo, seguro y económico.
 
 #### ¿Cuál es el problema o la oportunidad predominante del cliente?
 
-El problema predominante es que los usuarios no pueden predecir el tiempo de traslado de un punto a otro debido a eventos en el sistema de metro que no pueden predecir.
+El problema se basa en la complejidad de los sucesos impredecibles que ocurren durante el transcurso del día en el sistema colectivo de transporte METRO, de manera específica en la ruta diaria del usuario de un punto a otro, impidiento el transporte efectivo y eficiente. Proponemos un método de notificación respecto a los eventos que puedan afectar la ruta común del usuario y sugerir una vía alternativa para el mismo buscando una experiencia personalizada para cada usuario de acuerdo a su rutina.
 
 #### ¿Cuál es la solución y el beneficio más importante para el cliente?
 
-La solución es notificar a los usuarios de eventos en el sistema de metro que puedan afectar sus rutas comunes y mostrar rutas alternas. El beneficio es que los usuarios puedan mejorar su tiempo de traslado evitando contratiempos en el sistema de metro.
+Buscamos una implementación web que permita el libre manejo sobre la ruta diaría de un usuario-cliente. La aplicación tiene como objetivo prevenir y advertir sobre posibles sucesos dentro del sistema de transporte público del metro y con esto poder trazar una ruta más adaptatada a los eventos que impiden el libre transporte. Esto ayuda al cliente con información útil sobre los impedimentos en la ruta a seguir, con ayuda una vía alternativa lograremos reducir el tiempo gastado post-inconveniente.
 
 #### ¿Cómo describimos la solución y la experiencia de los clientes?
 
-La solución es un sistema que por medio de reportes tanto dentro del sistema como obtenidos a partir de otras fuentes pueda notificar a los usuarios de eventos en el sistema de metro que puedan afectar sus rutas comunes y mostrar rutas alternas.
+Es una experiencia personalizada, específica y preventiva hacia un usuario, que busca reducir los efectos de un problema en la rutina diaría y la solución alternativa ante los problemas que enfrenta la población Mexicana en el día a día.
 
 #### ¿Cómo probamos la solución con los clientes y medimos el éxito?
 
-La solución se puede probar con un grupo de usuarios que comúnmente se trasladan a través de la ciudad. El éxito se puede medir a través de la cantidad de eventos notificados por los usuarios y la cantidad de usuarios que han mejorado su tiempo de traslado. Se realizan encuestas a los usuarios para medir su satisfacción.
+La idea principal es, de manera estadística, utilizar los datos del usuario para comparar la efectividad de las rutas alternativas propuestas con respecto al tiempo aprovechado contra el tiempo perdido en una ruta con impedimentos en el camino. De manera simultanea buscamos preguntar al cliente por medio de encuestas sobre la experiencia de la ruta alternativa.
 
 ### Palabras clave
 
 #### PROBLEMÁTICA
 
-El transporte público es impredecible en sus tiempos a tal punto que no siempre es posible preparar una ruta que nos asegure el tiempo de traslado satisfactorio.
+Existen muchos eventos al día a día que son imbredecibles o inesperados, esto incluye cuestiones climáticas, geográficas, sociales y  catastróficas. Para la población mexicana son frecuentes estos sucesos que afectan de forma colectiva como individual en materia de transporte, lo cual afecta en la pérdida de tiempo y dinero, repercutiendo en la economía necional, empresarial o individual.
 
 #### APLICABILIDAD
 

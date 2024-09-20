@@ -10,11 +10,7 @@ st.markdown("""
         font-size: 60pt;
         color: #A020F0;
         text-align: center;
-    }
-            
-
-
-            w
+    }   
     </style>
     """, unsafe_allow_html=True)
 

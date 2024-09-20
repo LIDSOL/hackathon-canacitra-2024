@@ -1,18 +1,26 @@
 import streamlit as st
 import pandas as pd
 
-# Import the custom curvy-style font using Google Fonts
+#load data
+
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap');
+    
     h1 {
-        font-family: 'Pacifico', cursive;
-        font-size: 60pt;
-        color: #A020F0;
         text-align: center;
-    }   
+        color: #a822c9;
+        font-family: "Rubik Spray Paint", system-ui;
+        font-weight: 400;
+        font-style: normal;
+    }
+    
+    h2 {
+        text-align: left;
+        
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# Display your title with the custom font
-st.markdown("<h1>JELLYWAY</h1>", unsafe_allow_html=True)
+st.title('Jellyway')
+

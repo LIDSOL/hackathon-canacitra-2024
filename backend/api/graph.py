@@ -15,6 +15,20 @@ def agregar_estacion(conn, nombre, linea) -> None:
                    (nombre, linea))
     conn.commit()
 
+def obtener_estaciones_de_linea(conn) -> defaultdict:
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, linea FROM estaciones
+    """)
+
+    estaciones_dict = defaultdict(list)
+
+    estaciones = cursor.fetchall()
+    for estacion in estaciones:
+        estaciones_dict[estacion[1]].append(estacion[0])
+
+    return estaciones_dict
+
 # Agregar una conexion entre estaciones con un tiempo estimado
 def agregar_conexion(conn, origen, destino, tiempo_estimado=4) -> None:
     cursor = conn.cursor()
@@ -44,6 +58,12 @@ def obtener_estaciones_info(conn) -> defaultdict:
     for estacion in estaciones:
         estaciones_info[estacion[0]] = (estacion[1], estacion[2])
     return estaciones_info
+
+def obtener_conexiones_contienen_estacion(conn, estacion_id) -> list:
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM conexiones WHERE estacion_origen = ? OR estacion_destino = ?", (estacion_id, estacion_id))
+    conexiones = cursor.fetchall()
+    return conexiones
 
 def obtener_conexion_id(conn, origen, linea_origen, destino, linea_destino) -> int:
     cursor = conn.cursor()

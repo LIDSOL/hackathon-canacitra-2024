@@ -141,6 +141,19 @@ def encontrar_rutas(estacion_inicio, estacion_fin, grafo):
     except nx.NetworkXNoPath:
         return None, None
 
+def stringificar_ruta(conn, ruta):
+    s = ""
+
+    estaciones_info = obtener_estaciones_info(conn)
+
+    for estacion in ruta:
+        s += estaciones_info[estacion][0] + " -> "
+
+    # Quitar el ultimo " -> "
+    s = s[:-4]
+
+    return s
+
 def imprimir_grafo(conn, grafo):
     estaciones_info = obtener_estaciones_info(conn)
     conexiones_info = obtener_conexion_info(conn)

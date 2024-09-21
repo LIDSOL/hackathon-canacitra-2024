@@ -1,20 +1,17 @@
 # Source streamlint
 import streamlit as st
+import os
+import sys
 
-# Debemos de preguntar:
-# 1. Nombre
-# 2. Es estudiante o trabajador?
-# 3. Si lo es, ¿en qué escuela o empresa trabaja?
-# 4. A que hora suele salir de su casa?
-# 5. A que hora suele regresar a su casa?
-# 6. De donde suele salir?
-# Cada pregunta debe de ser respondida con un campo de texto.
-# Se responde a las preguntas con un botón de "Siguiente" y cambia a la siguiente pregunta.
-# Al finalizar se muestra un mensaje de "Gracias por registrarte"
+# Initialize session state variables
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+if 'page' not in st.session_state:
+    st.session_state['page'] = 'login'
 
 ## Set page configuration
 st.set_page_config(
-    page_title="Hola, nuevo usuario",
+    page_title="¡Hola!",
     page_icon="assets/mi_icono.jpg",
     # layout="wide",
     initial_sidebar_state="collapsed",
@@ -49,7 +46,63 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
+# ---- Page functions ----
+
+# Agregar modulos de backend
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../backend'))
+from db import *
+from user import *
+
+# Inicializamos la conexión a la base de datos
+conn = conexion_base_de_datos()
+
+# Comprobar credenciales de un usuario
+def login(username, password):
+    return check_login(conn, username, password)
+
+# Guardar usuario activo en archivo activo.txt
+def save_active_user_to_file(conn, email):
+    id = get_user_id(conn, email)
+
+    with open('active.txt', 'w') as file:
+        file.write(str(id))
+
+# Obtener el id del usuario activo de un archivo activo.txt
+def get_active_user_from_file() -> int:
+    with open('active.txt', 'r') as file:
+        if not file.read():
+            return -1
+        return int(file.read())
+
+# ---- Page functions ----
+
 pagina_actual = "pregunta_1"
+
+def login_page():
+    st.markdown("## Iniciar Sesión o Registrarse")
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    # Button to handle login
+    if st.button("Login"):
+        if login(email, password):
+            st.success("Entrando ... , bienvenido, " + email + "!")
+            # Marcar como loggeado
+            st.session_state['logged_in'] = True
+            save_active_user_to_file(conn, email)
+
+            # Redirigir a la página dashboard
+            st.switch_page("pages/2_dashboard.py")
+        else:
+            st.error("El usuario no existe, creando ...")
+            # Crear registro en la base de datos
+            add_user(conn, "", email, password)
+
+            st.session_state['logged_in'] = True
+            save_active_user_to_file(conn, email)
+            st.session_state['page'] = 'pregunta_1'
 
 def header_registro():
     st.markdown("# JELLYWAY")
@@ -119,9 +172,11 @@ def gracias_page():
 
 # Main logic to control page display, switch between pages
 if 'page' not in st.session_state:
-    st.session_state['page'] = 'pregunta_1'
+    st.session_state['page'] = 'login'
 
-if st.session_state['page'] == 'pregunta_1':
+if st.session_state['page'] == 'login':
+    login_page()
+elif st.session_state['page'] == 'pregunta_1':
     pregunta_1_page()
 elif st.session_state['page'] == 'pregunta_2':
     pregunta_2_page()

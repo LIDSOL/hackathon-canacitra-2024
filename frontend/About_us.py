@@ -4,7 +4,6 @@ st.set_page_config(
     page_title="JELLYWAY-About us",
     page_icon="assets/mi_icono.jpg",
     # layout="wide",
-    initial_sidebar_state="expanded",
     menu_items={
         'Get Help': 'https://github.com/LIDSOL/hackathon-canacitra-2024',
         'Report a bug': "https://github.com/LIDSOL/hackathon-canacitra-2024",

@@ -93,28 +93,21 @@ def test(conn):
     for estacion in ruta:
         print(estaciones_info[estacion], end=" -> ")
     print()
+    
+#querry del usuario por correo, y obtener la id del usuario 
+def obtener_id_usuario(conn, email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT id_usuario FROM usuarios WHERE id_usuario = ?", (email,))
+    return cursor.fetchone()[0]
+
+#querry de la linea por nombre y obtener la id de la linea
+def obtener_id_linea(conn, nombre):
+    cursor = conn.cursor()
+    cursor.execute("SELECT id_linea FROM lineas WHERE nombre = ?", (nombre,))
+    return cursor.fetchone()[0]
 
 
-#funcion para añadir un usuraio nuevo a la base de datos
-#input email, nombre, contraseña
-#output
-def guardar_usuario(conn, email, nombre, contraseña):
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO usuarios(email, nombre, contraseña) VALUES (?,?,?)", (email, nombre, contraseña))
-    conn.commit()
-#input email, destino, horario, dias
-#output 
-#funcion para almacenar en la tabla rutas una ruta comun de un usuario recibe -> id del usuairo, destino, horario de salida,dias de la semana
-def guardar_ruta(conn, id_usuario, destino, horario, dias):
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO rutas(id_usuario, destino, horario, dias) VALUES (?,?,?,?)", (id_usuario, destino, horario, dias))
-    conn.commit()
-
-#funcion para que un usuario pueda reportar un evento en la tabla reporte_usuario(id del usuario,la linea en la que ocurrio, el tiempo de demora)
-def reportar_evento(conn, id_usuario, linea, tiempo):
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO reporte_usuario(id_usuario, linea, tiempo) VALUES (?,?,?)", (id_usuario, linea, tiempo))
-    conn.commit()
+#input: recibe el id del usuario, el id de la linea, el horario en el que usa la linea, 
 
 # Ejemplo de uso
 #conn = conexion_base_de_datos()

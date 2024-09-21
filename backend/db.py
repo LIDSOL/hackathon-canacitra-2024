@@ -94,20 +94,12 @@ def test(conn):
         print(estaciones_info[estacion], end=" -> ")
     print()
     
-#querry del usuario por correo, y obtener la id del usuario 
-def obtener_id_usuario(conn, email):
+#query de la linea por nombre y obtener la id de la linea
+def get_linea_id(conn, nombre) -> int:
     cursor = conn.cursor()
-    cursor.execute("SELECT id_usuario FROM usuarios WHERE id_usuario = ?", (email,))
+    cursor.execute("SELECT id FROM lineas WHERE nombre = ?", (nombre,))
     return cursor.fetchone()[0]
 
-#querry de la linea por nombre y obtener la id de la linea
-def obtener_id_linea(conn, nombre):
-    cursor = conn.cursor()
-    cursor.execute("SELECT id_linea FROM lineas WHERE nombre = ?", (nombre,))
-    return cursor.fetchone()[0]
-
-
-#input: recibe el id del usuario, el id de la linea, el horario en el que usa la linea, 
 
 # Ejemplo de uso
 #conn = conexion_base_de_datos()

@@ -6,6 +6,12 @@ import streamlit as st
 # 3. Una sugerencia de listas de lugares a donde se puede dirigir
 # 4. Un mapa de la ubicación actual
 
+# Obtener el id del usuario activo de un archivo activo.txt
+def get_active_user_from_file() -> str:
+    with open('active.txt', 'r') as file:
+        return file.read()
+
+
 ## Set page configuration
 st.set_page_config(
     page_title="Jellyway",
@@ -68,5 +74,11 @@ with col2:
     mapa = '<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=-99.1234803199768%2C19.392590361364118%2C-99.1088891029358%2C19.404086436656293&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=16/19.39834/-99.11618">View Larger Map</a></small>'
     st.markdown(mapa, unsafe_allow_html=True)
 
-
-
+if st.sidebar.button("Log out", key="logout_button_action"):
+    if 'logged_in' in st.session_state:
+        st.session_state['logged_in'] = False
+        st.sidebar.success("You have successfully logged out")
+        st.switch_page("About_us.py")
+    else:
+        st.sidebar.error("There is no session active now")
+        st.switch_page("About_us.py")

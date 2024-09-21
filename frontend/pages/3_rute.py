@@ -68,5 +68,11 @@ with col2:
     map = '<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=-99.17232871055603%2C19.359954577831356%2C-99.16868090629579%2C19.36282924864357&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=18/19.361392/-99.170505">View Larger Map</a></small>'
     st.markdown(map, unsafe_allow_html=True)
 
-
-
+if st.sidebar.button("Log out", key="logout_button_action"):
+    if 'logged_in' in st.session_state:
+        st.session_state['logged_in'] = False
+        st.sidebar.success("You have successfully logged out")
+        st.switch_page("About_us.py")
+    else:
+        st.sidebar.error("There is no session active now")
+        st.switch_page("About_us.py")

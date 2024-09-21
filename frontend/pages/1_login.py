@@ -156,6 +156,8 @@ def pregunta_2_page():
                 save_ruta_info_to_file("Entre")
             elif fin:
                 save_ruta_info_to_file("Fin")
+            else:
+                save_ruta_info_to_file("Ninguno")
             st.session_state['page'] = 'gracias'
 
 def gracias_page():
@@ -184,6 +186,8 @@ def gracias_page():
         dias = 2
     elif ruta[4] == "Fin":
         dias = 3
+    else:
+        dias = 0
 
     agregar_ruta(conn, get_active_user_from_file(), hora_salida, dias, estacion_destino)
     agregar_ruta(conn, get_active_user_from_file(), hora_llegada, dias, estacion_origen)

@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import sys
 
 # Debe mostrar:
 # 1. Las lineas que se encuentran mal
@@ -6,11 +8,20 @@ import streamlit as st
 # 3. Una sugerencia de listas de lugares a donde se puede dirigir
 # 4. Un mapa de la ubicación actual
 
+# Agregar modulos de backend
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../backend'))
+from db import *
+from user import *
+from ai import *
+
 # Obtener el id del usuario activo de un archivo activo.txt
 def get_active_user_from_file() -> str:
     with open('active.txt', 'r') as file:
         return file.read()
 
+conn = conexion_base_de_datos()
+user_id = get_active_user_from_file()
+user_name = get_user_name(conn, user_id)
 
 ## Set page configuration
 st.set_page_config(
@@ -57,15 +68,18 @@ col1, col2 = st.columns(2)
 
 # Columna 1
 with col1:
-    st.markdown("## ¡Hola fer! 🌟")
+    st.markdown("## ¡Hola "+user_name+"! 🌟")
 
     lugar = st.text_input("#### ¡Buenos días!, dónde te diriges hoy? 🤔")
 
     # Mostrar los lugares en cuadros tipo botones
     st.markdown("#### Te sugerimos los siguientes lugares de tus lugares frecuentes:")
-    button_1 = st.button("UNAM 🎓")
-    st.warning('La línea 3 tiene un retraso de 5 minutos. 🕒')
-    button_2 = st.button("Polanco 💼")
+
+    estaciones_info = obtener_estaciones_info(conn)
+    destinos = obtener_destinos_ruta_usuario(conn, user_id)
+
+    for destino in destinos:
+        b = st.button(estaciones_info[destino[0]][0])
 
 with col2:
     st.markdown("#### Te encuentras en:")

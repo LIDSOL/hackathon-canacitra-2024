@@ -129,7 +129,12 @@ def ruta_ideal(conn, estacion_origen, estacion_destino) -> bool:
     else:
         print("Hay contratiempos en la ruta usual") 
         return False
-    
+
+def obtener_destinos_ruta_usuario(conn, usuario) -> list:
+    cursor = conn.cursor()
+    cursor.execute("SELECT destino FROM rutas WHERE usuario = ?", (usuario,))
+    return cursor.fetchall()
+
 #funcion para agregar una ruta a la tabla rutas()
 # Ejemplo de uso
 #conn = conexion_base_de_datos()

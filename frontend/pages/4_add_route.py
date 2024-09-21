@@ -54,6 +54,8 @@ def create_route_page():
                 dias = 2
             elif fin:
                 dias = 3
+            else:
+                dias = 0
 
             agregar_ruta(conn, get_active_user_from_file(), hora_salida, dias, estacion_destino)
             agregar_ruta(conn, get_active_user_from_file(), hora_llegada, dias, estacion_origen)

@@ -50,6 +50,8 @@ def save_oficial_reports(conn):
         if cursor.fetchone():
             continue
 
+        # Print the new tweet
+        print("New tweet:", tweet['content'])
         # Save the tweet in the database
         cursor.execute("INSERT INTO tweets_oficiales (tweet_hash) VALUES (?)", (tweet_hash,))
 
@@ -58,21 +60,20 @@ def save_oficial_reports(conn):
             s = f"datetime('now', '+{delay} minutes')"
             # The date will be the time the delay should stop
             cursor.execute("INSERT INTO reportes_usuario (usuario, linea, fecha) VALUES (0, ?, "+s+")", (line,))
+            # Notify of new report
+            print(f"New report: Line {line} will be delayed until {s}")
 
     conn.commit()
 
-# Demo
+# Start scrapping every 15 minutes
 
-# Mostrar los reportes de la ultima hora
-#from reports import get_user_reports
-#from db import conexion_base_de_datos
+from db import conexion_base_de_datos
+import time
 
-#conn = conexion_base_de_datos()
-#print(get_user_reports(conn, 0))
+conn = conexion_base_de_datos()
+print("Starting scraper")
 
-## Guardar los reportes oficiales
-#save_oficial_reports(conn)
-
-## Mostrar los reportes de la ultima hora
-#print(get_user_reports(conn, 0))
+while True:
+    save_oficial_reports(conn)
+    time.sleep(900)
 

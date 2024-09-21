@@ -24,3 +24,7 @@ Elementos de frontend:
     - privacidad
         - localización
 - interfaz de eventos
+
+notificaciones
+repotar
+rutes

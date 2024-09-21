@@ -24,26 +24,24 @@ CREATE TABLE IF NOT EXISTS conexiones (
     FOREIGN KEY (estacion_destino) REFERENCES estaciones(id)
 );
 
--- Crear tabla de catalogo de eventos
-CREATE TABLE IF NOT EXISTS eventos (
+-- Reporte por linea
+CREATE TABLE IF NOT EXISTS reporte_linea (
     id INTEGER PRIMARY KEY,
-    nombre TEXT NOT NULL,
-    descripcion TEXT NOT NULL,
-    fecha_inicio TEXT NOT NULL,
-    fecha_fin TEXT NOT NULL,
     tiempo_estimado INTEGER NOT NULL,
-    tipo INTEGER NOT NULL,
-    usuario_creador INTEGER NULL,
-    FOREIGN KEY (usuario_creador) REFERENCES usuarios(id)
+    linea INTEGER NOT NULL,
+    popularidad INTEGER NOT NULL,
+    ultimo_reporte DATETIME NOT NULL,
+    FOREIGN KEY (linea) REFERENCES lineas(id)
 );
 
--- Crear tabla de eventos en estaciones
-CREATE TABLE IF NOT EXISTS eventos_estaciones (
+-- Crear tabla de reportes de usuario
+CREATE TABLE IF NOT EXISTS reportes_usuario (
     id INTEGER PRIMARY KEY,
-    evento INTEGER NOT NULL,
-    estacion INTEGER NOT NULL,
-    FOREIGN KEY (evento) REFERENCES eventos(id),
-    FOREIGN KEY (estacion) REFERENCES estaciones(id)
+    usuario INTEGER NOT NULL,
+    linea INTEGER NOT NULL,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (usuario) REFERENCES usuarios(id),
+    FOREIGN KEY (linea) REFERENCES lineas(id),
 );
 
 -- Crear tabla de usuarios

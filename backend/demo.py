@@ -10,3 +10,9 @@ add_user(conn, "fer", "ordfer@gmail.com", "password")
 agregar_ruta(conn, "ordfer@gmail.com", "6:32", "Lunes", "Universidad")
 # Agregar ruta a polanco
 agregar_ruta(conn, "ordfer@gmail.com", "7:00", "Martes", "Polanco")
+
+# Agregar retraso en linea 3
+actualizar_linea(conn, "ML3", 5)
+# Agregar retraso en linea 7
+actualizar_linea(conn, "ML7", 10)
+

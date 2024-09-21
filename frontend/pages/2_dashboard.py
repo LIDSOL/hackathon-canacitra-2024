@@ -53,15 +53,16 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("## ¡Hola fer! 🌟")
 
-    lugar = st.text_input("### ¿A donde te diriges? 🤔")
+    lugar = st.text_input("#### ¡Buenos días!, dónde te diriges hoy? 🤔")
 
     # Mostrar los lugares en cuadros tipo botones
-    st.markdown("### Te sugerimos los siguientes lugares de tus lugares frecuentes:")
+    st.markdown("#### Te sugerimos los siguientes lugares de tus lugares frecuentes:")
     button_1 = st.button("UNAM 🎓")
+    st.warning('La línea 3 tiene un retraso de 5 minutos. 🕒')
     button_2 = st.button("Polanco 💼")
 
 with col2:
-    st.markdown("### Te encuentras en:")
+    st.markdown("#### Te encuentras en:")
 
     # Mostrar el mapa de la ubicación actual
     mapa = '<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=-99.1234803199768%2C19.392590361364118%2C-99.1088891029358%2C19.404086436656293&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=16/19.39834/-99.11618">View Larger Map</a></small>'

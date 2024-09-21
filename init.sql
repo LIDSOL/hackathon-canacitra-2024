@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS conexiones (
 -- Reporte por linea
 CREATE TABLE IF NOT EXISTS reporte_linea (
     id INTEGER PRIMARY KEY,
+    hash_reporte TEXT NOT NULL,
     tiempo_estimado INTEGER NOT NULL,
     linea INTEGER NOT NULL,
     popularidad INTEGER NOT NULL,

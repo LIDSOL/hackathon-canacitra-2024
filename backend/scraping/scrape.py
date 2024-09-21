@@ -2,6 +2,11 @@ import asyncio
 import hashlib
 from playwright.async_api import async_playwright
 from openai import OpenAI
+import sqlite3
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../api'))
+import db
 
 client = OpenAI()
 
@@ -83,3 +88,8 @@ print(tweets)
 for tweet in tweets:
     tweethash = hashlib.sha256((tweet['content'] + tweet['date']).encode("utf-8")).hexdigest()
     print(tweet["content"], "\n", ai_guess_delay(tweet["content"]))
+    # Guarda un nuevo reporte en la base de datos
+    conn = db.conexion_base_de_datos()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM conexiones")
+    print('HUH', cursor.fetchall())

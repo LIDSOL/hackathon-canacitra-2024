@@ -185,7 +185,8 @@ def gracias_page():
     elif ruta[4] == "Fin":
         dias = 3
 
-    agregar_ruta(conn, get_active_user_from_file(), hora_salida, hora_llegada, estacion_destino)
+    agregar_ruta(conn, get_active_user_from_file(), hora_salida, dias, estacion_destino)
+    agregar_ruta(conn, get_active_user_from_file(), hora_llegada, dias, estacion_origen)
     clear_file()
 
     st.switch_page("pages/2_dashboard.py")
@@ -202,3 +203,12 @@ elif st.session_state['page'] == 'pregunta_2':
     pregunta_2_page()
 elif st.session_state['page'] == 'gracias':
     gracias_page()
+
+if st.sidebar.button("Log out", key="logout_button_action"):
+    if 'logged_in' in st.session_state:
+        st.session_state['logged_in'] = False
+        st.sidebar.success("You have successfully logged out")
+        st.switch_page("About_us.py")
+    else:
+        st.sidebar.error("There is no session active now")
+        st.switch_page("About_us.py")

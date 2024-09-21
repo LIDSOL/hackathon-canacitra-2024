@@ -32,6 +32,15 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.markdown("## What is JELLY WAY?")
+if st.sidebar.button("Log out", key="logout_button_action"):
+    if 'logged_in' in st.session_state:
+        st.session_state['logged_in'] = False
+        st.sidebar.success("You have successfully logged out")
+        st.switch_page("About_us.py")
+    else:
+        st.sidebar.error("There is no session active now")
+        st.switch_page("About_us.py")
+
 st.sidebar.header("Information")
 st.write(
     """

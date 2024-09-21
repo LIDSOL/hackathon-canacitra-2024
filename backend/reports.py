@@ -1,4 +1,5 @@
 from ai import ai_guess_report
+from db import actualizar_linea
 
 # Añadir un reporte de un usuario
 # INPUT: id_usuario, mensaje
@@ -41,3 +42,27 @@ def get_line_reports(conn, linea) -> int:
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM reportes_usuario WHERE linea = ? AND fecha > datetime('now', '-1 hour')", (linea,))
     return cursor.fetchone()[0]
+
+# Actualizar tiempos de espera de las lineas de acuerdo a los reportes
+# INPUT: NONE
+# OUTPUT: NONE
+# update_delays(conn)
+# Res: Actualiza los tiempos de espera de las lineas en la base de datos, si hay mas de 3 reportes en la ultima hora se actualiza el tiempo de espera a la cantidad de reportes, si no se actualiza a 0
+# Para comprobar los cambios se puede usar bad_lines_list(conn), funcion que se encuentra en maps.py
+def update_delays(conn) -> None:
+    cursor = conn.cursor()
+
+    # Obtener todas las lineas
+    cursor.execute("SELECT nombre FROM lineas")
+    lineas = [linea[0] for linea in cursor.fetchall()]
+
+    for linea in lineas:
+        # Obtener el numero de reportes de la ultima hora
+        reportes = get_line_reports(conn, linea)
+
+        # Si hay reportes, actualizar el tiempo de espera
+        if reportes > 3:
+            actualizar_linea(conn, linea, reportes)
+        else:
+            actualizar_linea(conn, linea, 0)
+    conn.commit()

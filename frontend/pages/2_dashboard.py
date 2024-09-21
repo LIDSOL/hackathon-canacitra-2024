@@ -19,6 +19,10 @@ def get_active_user_from_file() -> str:
     with open('active.txt', 'r') as file:
         return file.read()
 
+def set_estacion_destino(estacion_id) -> int:
+    with open('estacion_destino.txt', 'w') as file:
+        file.write(str(estacion_id))
+
 conn = conexion_base_de_datos()
 user_id = get_active_user_from_file()
 user_name = get_user_name(conn, user_id)
@@ -76,10 +80,12 @@ with col1:
     st.markdown("#### Te sugerimos los siguientes lugares de tus lugares frecuentes:")
 
     estaciones_info = obtener_estaciones_info(conn)
-    destinos = obtener_destinos_ruta_usuario(conn, user_id)
+    destinos = set(obtener_destinos_ruta_usuario(conn, user_id))
 
     for destino in destinos:
-        b = st.button(estaciones_info[destino[0]][0])
+        if st.button(estaciones_info[destino[0]][0]):
+            set_estacion_destino(destino[0])
+            st.switch_page("pages/3_rute.py")
 
 with col2:
     st.markdown("#### Te encuentras en:")

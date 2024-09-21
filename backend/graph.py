@@ -151,6 +151,7 @@ def stringificar_ruta(conn, ruta):
 
     return s
 
+
 def imprimir_grafo(conn, grafo):
     estaciones_info = obtener_estaciones_info(conn)
     conexiones_info = obtener_conexion_info(conn)

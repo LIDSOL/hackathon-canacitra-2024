@@ -1,4 +1,15 @@
 import streamlit as st
+import sys
+import os
+import random
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../backend'))
+from graph import *
+from db import *
+from ai import *
+
+def get_estacion_destino() -> int:
+    with open('estacion_destino.txt', 'r') as file:
+        return int(file.read())
 
 # Debe mostrar:
 # 1. Mapa de donde se encuentra el usuario
@@ -43,6 +54,32 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+conn = conexion_base_de_datos()
+cursor = conn.cursor()
+estaciones_info = obtener_estaciones_info(conn)
+estacion_inicial_id = guess_near_station(conn, 'Estoy en una de las estaciones mas transitadas')
+estacion_inicial_info = estaciones_info[estacion_inicial_id]
+
+grafo_ideal = obtener_grafo_ideal(conn)
+grafo_real = obtener_grafo(conn)
+ruta_ideal = encontrar_rutas(estacion_inicial_id,get_estacion_destino(), grafo_ideal)
+ruta_alterna = encontrar_rutas(estacion_inicial_id, get_estacion_destino(), grafo_real)
+
+print(ruta_ideal, ruta_alterna)
+
+if ruta_ideal[1] == ruta_alterna[1]:
+    print("No hay contratiempos")
+else:
+    print("Hay contratiempos en la ruta usual") 
+
+
+ubic_estacion_actual = random.randint(0, len(ruta_alterna[0]) - 1)
+estacion_actual = estaciones_info[ruta_alterna[0][ubic_estacion_actual]]
+estacion_siguiente = estaciones_info[ruta_alterna[0][ubic_estacion_actual+1]]
+estacion_final = estaciones_info[ruta_alterna[0][-1]]
+
+print(estacion_siguiente, estacion_final)
+
 # Lineas que se encuentran mal, asumir que la linea 8 es la que se encuentra mal
 st.markdown("# Jellyway")
 
@@ -50,21 +87,23 @@ st.markdown("# Jellyway")
 col1, col2 = st.columns(2)
 
 # Columna 2, tiempo estimado de llegada y ruta completa
-ruta = [('**Estacion anterior:** Zapata', 'ML3'), ('**Estacion actual:** Coyoacan', 'ML3'), ('**Estacion siguiente:** Viveros', 'ML3'), ('**Estacion final:** Universidad', 'ML3')]
+ruta = [('**Estacion inicial:** ' +estacion_inicial_info[0], estacion_inicial_info[1]),('**Estacion actual:** '+estacion_actual[0], estacion_actual[1]), ('**Estacion siguiente:** '+estacion_siguiente[0], estacion_siguiente[1]), ('**Estacion final:** '+estacion_final[0], estacion_final[1])]
 with col1:
     # Mostrar cada estación conectada a la ruta en orden como botones
     st.markdown("#### Ruta completa:")
     for estacion in ruta:
-        st.button(estacion[0])
+        st.button(f'{estacion[0]} ({estacion[1]})')
 
 
 
 # Columna 1,  mapa de donde se encuentra el usuario y porcentaje de viaje
 with col2:
-    st.markdown("#### Vas en la estacion Coyoacán de la linea 3 🚇")
+    st.markdown("#### Vas en la estacion "+estacion_actual[0]+" de la "+estacion_actual[1]+" 🚇")
     # Mostrar el porcentaje de viaje
     st.markdown("Porcentaje de viaje:")
-    st.progress(70)
+
+    progreso = int(100*(ubic_estacion_actual / len(ruta_alterna[0])))
+    st.progress(progreso)
     map = '<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=-99.17232871055603%2C19.359954577831356%2C-99.16868090629579%2C19.36282924864357&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=18/19.361392/-99.170505">View Larger Map</a></small>'
     st.markdown(map, unsafe_allow_html=True)
 

@@ -111,6 +111,7 @@ def get_estacion_id(conn, nombre) -> int:
 def agregar_ruta(conn, usuario, hora, dia_semana, estacion_id) -> None:
     cursor = conn.cursor()
 
+
     cursor.execute("INSERT INTO rutas (usuario, hora, dia_semana, destino) VALUES (?, ?, ?, ?)", (usuario, hora, dia_semana, estacion_id))
 
     conn.commit()
@@ -121,7 +122,7 @@ def ruta_ideal(conn, estacion_origen, estacion_destino) -> bool:
     grafo_ideal = obtener_grafo_ideal(conn)
     grafo_real = obtener_grafo(conn)
     ruta_alterna = encontrar_rutas(estacion_origen,estacion_destino, grafo_ideal)
-    ruta_alterna = encontrar_rutas(estacion_origen, estacion_destino, grafo_real)
+    ruta_real = encontrar_rutas(estacion_origen, estacion_destino, grafo_real)
     
     if ruta_ideal == ruta_alterna:
         print("No hay contratiempos")

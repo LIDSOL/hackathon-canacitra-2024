@@ -8,7 +8,7 @@ def ai_guess_delay(message) -> list:
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "The following message is a tweet from a official subway account. Please, if the message is that a subway line or lines are delayed (now or in the future, ignore if it was in the past), return an array of lines and the estimated delay in minutes if no time is given try to guess a number on the range from 1 to 60 minutes, otherwise return an empty array and 0 minutes. People who fall to the rails cause a delay of no less than 30 minutes. The response should be in python list format. There lines are 1-9, A,B and 12. The line format should be 'ML1', 'ML2', 'ML3', 'ML4', 'ML5', 'ML6', 'ML7', 'ML8', 'ML9', 'MLA', 'MLB' and 'ML12'. and the delay should be an integer, example [('ML1', 10), ('ML2', 20)]."},
+            {"role": "system", "content": "The following message is a tweet from a official subway account. Please, if the message is that a subway line or lines are delayed (now or in the future, ignore if it was in the past), return an array of lines and the estimated delay in minutes if no time is given try to guess a number on the range from 1 to 60 minutes, otherwise return 'NO'. People who fall to the rails cause a delay of no less than 30 minutes. The response should be in python list format. There lines are 1-9, A,B and 12. The line format should be 'ML1', 'ML2', 'ML3', 'ML4', 'ML5', 'ML6', 'ML7', 'ML8', 'ML9', 'MLA', 'MLB' and 'ML12'. and the delay should be an integer, example [('ML1', 10), ('ML2', 20)]."},
             {
                 "role": "user",
                 "content": message
@@ -23,6 +23,9 @@ def ai_guess_delay(message) -> list:
     #for line_delay in guess:
         #print("Line:", line_delay[0])
         #print("Delay:", line_delay[1])
+
+    if completion.choices[0].message.content == "NO":
+        return []
 
     return eval(completion.choices[0].message.content)
 

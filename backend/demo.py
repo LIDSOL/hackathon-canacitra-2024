@@ -16,3 +16,11 @@ actualizar_linea(conn, "ML3", 5)
 # Agregar retraso en linea 7
 actualizar_linea(conn, "ML7", 10)
 
+grafo = obtener_grafo(conn)
+estaciones_id = obtener_estaciones_id(conn)
+
+ruta, tiempo = encontrar_rutas(estaciones_id["Coyuya", "ML8"], estaciones_id["Universidad", "ML3"], grafo)
+
+s = stringificar_ruta(conn, ruta)
+print(s)
+

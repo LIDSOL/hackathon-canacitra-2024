@@ -1,27 +1,21 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import pandas as pd
-#import login_jellyway.py file
-
-#load data
 
 st.set_page_config(
     page_title="JELLYWAY-About us",
-    page_icon="assets/mi_icono.jpg", #add icon
+    page_icon="assets/mi_icono.jpg",
     # layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': 'https://www.extremelycoolapp.com/help',
-        'Report a bug': "https://www.extremelycoolapp.com/bug",
-        'About': "# This is a header. This is an *extremely* cool app!"
+        'Get Help': 'https://github.com/LIDSOL/hackathon-canacitra-2024',
+        'Report a bug': "https://github.com/LIDSOL/hackathon-canacitra-2024",
+        'About': "App that helps you find the best route to your destination in Mexico City."
     }
 )
 
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap');
-    
+
     h1 {
         text-align: center;
         color: #a822c9;
@@ -30,7 +24,7 @@ st.markdown("""
         font-weight: 400;
         font-style: normal;
     }
-    
+
     h2 {
         text-align: left;
         font_size: 20px;
@@ -56,7 +50,7 @@ Hello! We are a passionate team that understands that life is full of surprises.
 
 🎨 **User-Friendly Design**: We’ve created an app that is as easy to use as a walk in the park. With an intuitive and appealing design, finding the information you need will be a piece of cake. No more complications!
 
-**Ready to turn the unexpected into new opportunities?**  
+**Ready to turn the unexpected into new opportunities?**
 Download our app and join a community that supports one another. We are here to help you face any challenge with a smile. Let’s journey together towards tranquility!
 """
 )

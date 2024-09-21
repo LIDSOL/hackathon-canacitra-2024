@@ -2,6 +2,7 @@
 import streamlit as st
 import os
 import sys
+import time
 
 # Initialize session state variables
 if 'logged_in' not in st.session_state:
@@ -68,12 +69,20 @@ def save_active_user_to_file(conn, email):
     with open('active.txt', 'w') as file:
         file.write(str(id))
 
+# Borrar ruta.csv
+def clear_file():
+    with open('ruta.csv', 'w') as file:
+        file.write("")
+
+# Agregar info a ruta.csv
+def save_ruta_info_to_file(info):
+    with open('ruta.csv', '+a') as file:
+        file.write(info+',')
+
 # Obtener el id del usuario activo de un archivo activo.txt
-def get_active_user_from_file() -> int:
+def get_active_user_from_file() -> str:
     with open('active.txt', 'r') as file:
-        if not file.read():
-            return -1
-        return int(file.read())
+        return file.read()
 
 # ---- Page functions ----
 
@@ -115,60 +124,50 @@ def pregunta_1_page():
     nombre = st.text_input("Nombre")
 
     if st.button("Siguiente"):
+        change_user_name(conn, get_active_user_from_file(), nombre)
+        clear_file()
         st.session_state['page'] = 'pregunta_2'
 
-
 def pregunta_2_page():
-    header_registro()
-    st.markdown("### Oye fer, estudias o trabajas? 🎓💼")
-    estudiante = st.radio("Selecciona una opción", ("Estudiante 🎓", "Trabajador 💼", "Otros 🌟"))
+    with st.form("my_form"):
+        st.markdown("### "+get_user_name(conn, get_active_user_from_file())+", ¿Cuál es tu ruta habitual? 🚗")
 
-    if st.button("Siguiente"):
-        st.session_state['page'] = 'pregunta_3'
+        origen = st.text_input("Origen:")
+        destino = st.text_input("Destino:")
 
-def pregunta_3_page():
-    header_registro()
+        hora_salida = st.time_input("Hora de salida:")
+        hora_llegada = st.time_input("Hora de regreso:")
 
-    st.markdown("### ¿En donde estudias? 🏫")
-    lugar = st.text_input("Escuela")
+        st.write("¿Qué días de la semana realizas esta ruta?")
+        entre = st.checkbox("Lunes a Viernes")
+        fin = st.checkbox("Sábados y Domingos")
 
-    if st.button("Siguiente"):
-        st.session_state['page'] = 'pregunta_4'
-
-def pregunta_4_page():
-    header_registro()
-
-    st.markdown("### Y para ir a la UNAM, ¿a qué hora sueles salir de tu casa? ⏰")
-    hora = st.time_input("Hora de salida")
-
-    if st.button("Siguiente"):
-        st.session_state['page'] = 'pregunta_5'
-
-def pregunta_5_page():
-    header_registro()
-
-    st.markdown("### ¿Y a qué hora sueles regresar a tu casa? ⏰")
-    hora = st.time_input("Hora")
-
-    if st.button("Siguiente"):
-        st.session_state['page'] = 'pregunta_6'
-
-def pregunta_6_page():
-    header_registro()
-
-    st.markdown("### Para terminar, ¿de dónde sueles salir? 🏠")
-    lugar = st.text_input("Lugar")
-
-    if st.button("Siguiente"):
-        st.session_state['page'] = 'gracias'
+        # Every form must have a submit button.
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            save_ruta_info_to_file(origen)
+            save_ruta_info_to_file(destino)
+            save_ruta_info_to_file(str(hora_salida))
+            save_ruta_info_to_file(str(hora_llegada))
+            if entre and fin:
+                save_ruta_info_to_file("Todos")
+            elif entre:
+                save_ruta_info_to_file("Entre")
+            elif fin:
+                save_ruta_info_to_file("Fin")
+            st.session_state['page'] = 'gracias'
 
 def gracias_page():
     header_registro()
 
-    st.markdown("### ¡Excelente, fer! 🎉"
+    st.markdown("### ¡Excelente, "+get_user_name(conn, get_active_user_from_file())+" 🎉"
                 "Gracias por registrarte. 🌟\n"
                 "Te mantendremos informada de las mejores rutas para llegar a tu destino de manera segura y rápida.\n")
     st.balloons()
+
+    st.spinner("Cargando ...")
+    time.sleep(5)
+    st.switch_page("pages/2_dashboard.py")
 
 # Main logic to control page display, switch between pages
 if 'page' not in st.session_state:
@@ -180,13 +179,5 @@ elif st.session_state['page'] == 'pregunta_1':
     pregunta_1_page()
 elif st.session_state['page'] == 'pregunta_2':
     pregunta_2_page()
-elif st.session_state['page'] == 'pregunta_3':
-    pregunta_3_page()
-elif st.session_state['page'] == 'pregunta_4':
-    pregunta_4_page()
-elif st.session_state['page'] == 'pregunta_5':
-    pregunta_5_page()
-elif st.session_state['page'] == 'pregunta_6':
-    pregunta_6_page()
 elif st.session_state['page'] == 'gracias':
     gracias_page()

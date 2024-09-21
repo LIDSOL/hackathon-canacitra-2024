@@ -19,7 +19,7 @@ def get_active_user_from_file() -> str:
 
 
 if 'logged_in' not in st.session_state:
-    st.session_state['logged_in'] = False
+    st.session_state['logged_in'] = True
 if 'page' not in st.session_state:
     st.session_state['page'] = 'login'
 

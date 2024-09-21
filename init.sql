@@ -57,11 +57,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 CREATE TABLE IF NOT EXISTS rutas (
     id INTEGER PRIMARY KEY,
     usuario INTEGER NOT NULL,
-    origen INTEGER NOT NULL,
     destino INTEGER NOT NULL,
     hora INTEGER NOT NULL,
     dia_semana INTEGER NOT NULL,
     FOREIGN KEY (usuario) REFERENCES usuarios(id),
-    FOREIGN KEY (origen) REFERENCES estaciones(id),
     FOREIGN KEY (destino) REFERENCES estaciones(id)
 );

@@ -106,7 +106,7 @@ def get_estacion_id(conn, nombre) -> int:
     cursor.execute("SELECT id FROM estaciones WHERE nombre = ?", (nombre,))
     return cursor.fetchone()[0]
 
-#input, horario en la que se toma la ruta, los dias en la que lo toma, la estacion de destino.
+#input, horario en la que se toma la ruta, los dias en la que lo toma, la estacion de destino y el ususario que la creo.
 #funcion para agregar una ruta a la tabla rutas()
 def agregar_ruta(conn,email, hora, dia_semana, nombre_estacion) -> None:
     cursor = conn.cursor()
@@ -117,8 +117,24 @@ def agregar_ruta(conn,email, hora, dia_semana, nombre_estacion) -> None:
     cursor.execute("INSERT INTO rutas (usuario, hora, dia_semana, destino) VALUES (?, ?, ?, ?)", (usuario, hora, dia_semana, destino))
     conn.commit()    
 
+def ruta_ideal(conn, estacion_origen, estacion_destino) -> bool:
+    cursor = conn.cursor()
+    
+    grafo_ideal = obtener_grafo_ideal(conn)
+    grafo_real = obtener_grafo(conn)
+    ruta_alterna = encontrar_rutas(estacion_origen,estacion_destino, grafo_ideal)
+    ruta_alterna = encontrar_rutas(estacion_origen, estacion_destino, grafo_real)
+    
+    if ruta_ideal == ruta_alterna:
+        print("No hay contratiempos")
+        return True
+    else:
+        print("Hay contratiempos en la ruta usual") 
+        return False
+    
 #funcion para agregar una ruta a la tabla rutas()
 # Ejemplo de uso
 #conn = conexion_base_de_datos()
 #imprimir_grafo(conn)
+
 

@@ -24,17 +24,6 @@ CREATE TABLE IF NOT EXISTS conexiones (
     FOREIGN KEY (estacion_destino) REFERENCES estaciones(id)
 );
 
--- Reporte por linea
-CREATE TABLE IF NOT EXISTS reporte_linea (
-    id INTEGER PRIMARY KEY,
-    hash_reporte TEXT NOT NULL,
-    tiempo_estimado INTEGER NOT NULL,
-    linea INTEGER NOT NULL,
-    popularidad INTEGER NOT NULL,
-    ultimo_reporte DATETIME NOT NULL,
-    FOREIGN KEY (linea) REFERENCES lineas(id)
-);
-
 -- Crear tabla de reportes de usuario
 CREATE TABLE IF NOT EXISTS reportes_usuario (
     id INTEGER PRIMARY KEY,
@@ -52,6 +41,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     correo TEXT NOT NULL,
     contrasena TEXT NOT NULL
 );
+INSERT INTO usuarios (id, nombre, correo, contrasena) VALUES (0, 'admin', 'admin@admin.com', '!@#$%');
 
 -- Crear tabla de ruta de usuario
 CREATE TABLE IF NOT EXISTS rutas (
@@ -62,4 +52,10 @@ CREATE TABLE IF NOT EXISTS rutas (
     dia_semana INTEGER NOT NULL,
     FOREIGN KEY (usuario) REFERENCES usuarios(id),
     FOREIGN KEY (destino) REFERENCES estaciones(id)
+);
+
+-- Crear tabla de tweets oficiales
+CREATE TABLE IF NOT EXISTS tweets_oficiales (
+    id INTEGER PRIMARY KEY,
+    tweet_hash TEXT NOT NULL
 );

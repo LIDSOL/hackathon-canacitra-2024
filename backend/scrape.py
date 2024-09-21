@@ -1,60 +1,18 @@
 import asyncio
 import hashlib
+from ai import ai_guess_delay
 from playwright.async_api import async_playwright
-from openai import OpenAI
-import sqlite3
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../api'))
-import db
 
-client = OpenAI()
-
-def ai_guess_delay(message) -> str:
-    completion = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "The following message is a tweet from a official subway account. Please, if the message is that a subway line or lines are delayed (now or in the future, ignore if it was in the past), return an array of lines and the estimated delay in minutes if no time is given try to guess a number on the range from 1 to 60 minutes, otherwise return an empty array and 0 minutes. People who fall to the rails cause a delay of no less than 30 minutes. The response should be in raw json format, no markdown, only json. There lines are 1-9, A,B and 12 The attributes are 'lines' and 'delay'."},
-            {
-                "role": "user",
-                "content": message
-            }
-        ]
-    )
-
-    return completion.choices[0].message.content
-
-async def login_to_twitter(page, username, password):
-    # Navega a la página de inicio de sesión de Twitter
-    await page.goto('https://twitter.com/login')
-
-    # Espera a que los campos de inicio de sesión se carguen y rellénalos
-    await page.fill('input[type="text"]', username)
-
-    botones = await page.query_selector_all('button')
-
-    await botones[-2].click()
-
-    await page.fill('input[type="text"]', password)
-
-    botones = await page.query_selector_all('button')
-
-    await botones[-1].click()
-
-    # Espera a que se complete la navegación y se cargue la página principal de Twitter
-    # await page.wait_for_navigation()
-
-async def fetch_recent_tweets(username, twitter_username, twitter_password):
+# Función para extraer los tweets más recientes de un usuario de Twitter
+# INPUT: "Twitter username"
+# OUTPUT: [{"content": "Tweet content", "date": "Tweet date"}, ...]
+async def fetch_recent_tweets(twitter_username):
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(storage_state="auth.json")
         page = await context.new_page()
 
-        # await page.goto("https://x.com/MetroCDMX")
-        await page.goto("https://x.com/TepalYael79389")
-
-        # # Inicia sesión en Twitter
-        # await login_to_twitter(page, twitter_username, twitter_password)
+        await page.goto("https://x.com/"+twitter_username)
 
         # Espera que los tweets se carguen
         await page.wait_for_selector('article')
@@ -76,34 +34,45 @@ async def fetch_recent_tweets(username, twitter_username, twitter_password):
         await browser.close()
         return tweets
 
-# Reemplaza 'usuario_de_twitter' con el nombre de usuario de Twitter que deseas consultar
-target_username = 'MetroCDMX'
+def save_oficial_reports(conn):
+    #target_username = "MetroCDMX"
+    target_username = "TepalYael79389"
 
-# Credenciales de tu cuenta de Twitter
-twitter_username = 'TepalYael79389'
-twitter_password = 'Hans66306713333'
-
-tweets = asyncio.run(fetch_recent_tweets(target_username, twitter_username, twitter_password))
-print(tweets)
-for tweet in tweets:
-    tweethash = hashlib.sha256((tweet['content'] + tweet['date']).encode("utf-8")).hexdigest()
-    print(tweet["content"], "\n", ai_guess_delay(tweet["content"]))
-    # Guarda un nuevo reporte en la base de datos
-    conn = db.conexion_base_de_datos()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM conexiones")
-    print('HUH', cursor.fetchall())
-    
-    #inserta rn la base de datos metro.deb los tweets en la tabla reporte_lineas con el hash del tweet y el contenido del tweet
-    #cursor.execute("INSERT INTO reporte_lineas (hash, contenido) VALUES (?, ?)", (tweethash, tweet["content"]))
-    #conn.commit()
-    #conn.close()
-    
-    #agregar usuarios a la base de datos desde el fronted
-    #cursor.execute("INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)", (nombre, correo, contraseña))
-    #conn.commit()
-    #conn.close()
-    #cursor.execute("SELECT * FROM usuarios")
-    #print(cursor.fetchall())
-    
-    
+
+    tweets = asyncio.run(fetch_recent_tweets(target_username))
+
+    for tweet in tweets:
+        tweet_hash = hashlib.sha256((tweet['content'] + tweet['date']).encode("utf-8")).hexdigest()
+
+        # If the tweet was already saved, skip it
+        cursor.execute("SELECT * FROM tweets_oficiales WHERE tweet_hash = ?", (tweet_hash,))
+        if cursor.fetchone():
+            continue
+
+        # Save the tweet in the database
+        cursor.execute("INSERT INTO tweets_oficiales (tweet_hash) VALUES (?)", (tweet_hash,))
+
+        list_of_delayed_lines = ai_guess_delay(tweet["content"])
+        for line, delay in list_of_delayed_lines:
+            s = f"datetime('now', '+{delay} minutes')"
+            # The date will be the time the delay should stop
+            cursor.execute("INSERT INTO reportes_usuario (usuario, linea, fecha) VALUES (0, ?, "+s+")", (line,))
+
+    conn.commit()
+
+# Demo
+
+# Mostrar los reportes de la ultima hora
+#from reports import get_user_reports
+#from db import conexion_base_de_datos
+
+#conn = conexion_base_de_datos()
+#print(get_user_reports(conn, 0))
+
+## Guardar los reportes oficiales
+#save_oficial_reports(conn)
+
+## Mostrar los reportes de la ultima hora
+#print(get_user_reports(conn, 0))
+

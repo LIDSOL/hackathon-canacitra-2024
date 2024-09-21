@@ -110,29 +110,47 @@ def obtener_grafo(conn) -> nx.DiGraph:
 
     return G
 
-# Encontrar la ruta más corta entre dos estaciones
-def encontrar_rutas(conn, estacion_inicio, estacion_fin):
-    G = obtener_grafo(conn)
+# Crear el grafo ideal de las estaciones y conexiones
+def obtener_grafo_ideal(conn) -> nx.DiGraph:
+    G = None
+    G = nx.DiGraph()
 
+    # Obtener las estaciones
+    estaciones = conn.execute("SELECT id, nombre FROM estaciones").fetchall()
+
+    # Anadir nodos (estaciones)
+    for estacion in estaciones:
+        G.add_node(estacion[0], nombre=estacion[1])
+
+    # Obtener las conexiones (con su tiempo estimado)
+    conexiones = conn.execute("SELECT estacion_origen, estacion_destino, tiempo_estimado FROM conexiones").fetchall()
+
+    # Anadir aristas (conexiones)
+    for conexion in conexiones:
+        G.add_edge(conexion[0], conexion[1], weight=4)
+
+    return G
+
+# Encontrar la ruta más corta entre dos estaciones
+def encontrar_rutas(estacion_inicio, estacion_fin, grafo):
     # Encontrar la ruta más corta en tiempo estimado
     try:
-        rutas = nx.shortest_path(G, source=estacion_inicio, target=estacion_fin, weight='weight')
-        tiempo_total = sum(G[u][v]['weight'] for u, v in zip(rutas[:-1], rutas[1:]))
+        rutas = nx.shortest_path(grafo, source=estacion_inicio, target=estacion_fin, weight='weight')
+        tiempo_total = sum(grafo[u][v]['weight'] for u, v in zip(rutas[:-1], rutas[1:]))
         return rutas, tiempo_total
     except nx.NetworkXNoPath:
         return None, None
 
-def imprimir_grafo(conn):
-    G = obtener_grafo(conn)
+def imprimir_grafo(conn, grafo):
     estaciones_info = obtener_estaciones_info(conn)
     conexiones_info = obtener_conexion_info(conn)
 
     print("Estaciones:")
-    for node in G.nodes:
+    for node in grafo.nodes:
         print(f"{node}: {estaciones_info[node]}")
 
     print("\nConexiones:")
-    for edge in G.edges:
+    for edge in grafo.edges:
         origen = estaciones_info[edge[0]]
         destino = estaciones_info[edge[1]]
 

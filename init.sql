@@ -63,12 +63,3 @@ CREATE TABLE IF NOT EXISTS rutas (
     FOREIGN KEY (usuario) REFERENCES usuarios(id),
     FOREIGN KEY (destino) REFERENCES estaciones(id)
 );
-
--- Crear tabla de lineas en ruta
-CREATE TABLE IF NOT EXISTS lineas_ruta (
-    id INTEGER PRIMARY KEY,
-    ruta INTEGER NOT NULL,
-    linea INTEGER NOT NULL,
-    FOREIGN KEY (ruta) REFERENCES rutas(id),
-    FOREIGN KEY (linea) REFERENCES lineas(id)
-);

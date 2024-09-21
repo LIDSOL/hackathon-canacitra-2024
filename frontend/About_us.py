@@ -39,7 +39,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.markdown("## What is JELLY WAY?")
-st.sidebar.header("Options")
+st.sidebar.header("Information")
 st.write(
     """
 ### Your Companion in the Unexpected

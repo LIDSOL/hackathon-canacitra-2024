@@ -12,7 +12,7 @@ if 'page' not in st.session_state:
 
 # Set page configuration
 st.set_page_config(
-    page_title="JELLYWAY-Route",
+    page_title="JELLYWAY-Map",
     page_icon="🗺️", # add icon
     initial_sidebar_state="expanded",
     menu_items={
@@ -44,7 +44,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.markdown("# JELLYWAY")
-st.sidebar.header("Options")
+st.sidebar.header("Map")
 
 def login(username, password):
     if username == valid_email and password == valid_password:

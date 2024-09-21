@@ -54,6 +54,7 @@ st.markdown(
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../backend'))
 from db import *
 from user import *
+from ai import *
 
 # Inicializamos la conexión a la base de datos
 conn = conexion_base_de_datos()
@@ -164,9 +165,29 @@ def gracias_page():
                 "Gracias por registrarte. 🌟\n"
                 "Te mantendremos informada de las mejores rutas para llegar a tu destino de manera segura y rápida.\n")
     st.balloons()
-
     st.spinner("Cargando ...")
-    time.sleep(5)
+
+    # Mandar nueva ruta del usuario a la base
+    # Leer lista de csv
+    with open('ruta.csv', 'r') as file:
+        ruta = file.read().split(',')
+    estacion_origen = guess_near_station(conn, ruta[0])
+    estacion_destino = guess_near_station(conn, ruta[1])
+
+    # Convertir hora a formato timestamp sqlite
+    hora_salida = ruta[2]
+    hora_llegada = ruta[3]
+
+    if ruta[4] == "Todos":
+        dias = 1
+    elif ruta[4] == "Entre":
+        dias = 2
+    elif ruta[4] == "Fin":
+        dias = 3
+
+    agregar_ruta(conn, get_active_user_from_file(), hora_salida, hora_llegada, estacion_destino)
+    clear_file()
+
     st.switch_page("pages/2_dashboard.py")
 
 # Main logic to control page display, switch between pages

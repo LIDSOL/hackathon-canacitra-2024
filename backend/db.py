@@ -108,14 +108,12 @@ def get_estacion_id(conn, nombre) -> int:
 
 #input, horario en la que se toma la ruta, los dias en la que lo toma, la estacion de destino y el ususario que la creo.
 #funcion para agregar una ruta a la tabla rutas()
-def agregar_ruta(conn,email, hora, dia_semana, nombre_estacion) -> None:
+def agregar_ruta(conn, usuario, hora, dia_semana, estacion_id) -> None:
     cursor = conn.cursor()
-    
-    usuario = get_user_id(conn, email)
-    destino = get_estacion_id(conn, nombre_estacion)
-    
-    cursor.execute("INSERT INTO rutas (usuario, hora, dia_semana, destino) VALUES (?, ?, ?, ?)", (usuario, hora, dia_semana, destino))
-    conn.commit()    
+
+    cursor.execute("INSERT INTO rutas (usuario, hora, dia_semana, destino) VALUES (?, ?, ?, ?)", (usuario, hora, dia_semana, estacion_id))
+
+    conn.commit()
 
 def ruta_ideal(conn, estacion_origen, estacion_destino) -> bool:
     cursor = conn.cursor()

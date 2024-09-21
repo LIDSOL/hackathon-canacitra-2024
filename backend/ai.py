@@ -1,4 +1,5 @@
 from openai import OpenAI as ai
+from graph import obtener_estaciones_id
 
 # INPUT: "Natural language message of a subway delay"
 # OUTPUT: "list with the subway lines and the estimated delay in minutes"
@@ -53,3 +54,30 @@ def ai_guess_report(message) -> list:
 
     # Convert the string to a tuple
     return eval(completion.choices[0].message.content)
+
+def guess_near_station(conn, message) -> int:
+    client = ai()
+    estaciones_id = obtener_estaciones_id(conn)
+
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "These are the stations available '"+str(estaciones_id)+"'. The following message is a place in Mexico City, print the id of the nearest station. The response should be in python integer format. Always choose a station. Only return the integer, example 1."},
+            {
+                "role": "user",
+                "content": message
+            }
+        ]
+    )
+
+    return eval(completion.choices[0].message.content)
+
+# Example usage
+#from graph import obtener_estaciones_info
+#from db import conexion_base_de_datos
+
+#conn = conexion_base_de_datos()
+#message = "Las quesadillas de la esquina del monumento a la revolución están deliciosas"
+#station_id = guess_near_station(conn, message)
+#station_info = obtener_estaciones_info(conn)
+#print(station_info[station_id])

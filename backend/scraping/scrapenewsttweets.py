@@ -1,5 +1,22 @@
 import asyncio
 from playwright.async_api import async_playwright
+from openai import OpenAI
+
+client = OpenAI()
+
+def ai_guess_delay(message) -> str:
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "The following message is a tweet from a official subway account. Please, if the message is that a subway line or lines are delayed (now or in the future, ignore if it was in the past), return an array of lines and the estimated delay in minutes if no time is given try to guess a number on the range from 1 to 60 minutes, otherwise return an empty array and 0 minutes. People who fall to the rails cause a delay of no less than 30 minutes. The response should be in raw json format, no markdown, only json. There lines are 1-9, A,B and 12 The attributes are 'lines' and 'delay'."},
+            {
+                "role": "user",
+                "content": message
+            }
+        ]
+    )
+
+    return completion.choices[0].message.content
 
 async def login_to_twitter(page, username, password):
     # Navega a la página de inicio de sesión de Twitter
@@ -23,11 +40,12 @@ async def login_to_twitter(page, username, password):
 
 async def fetch_recent_tweets(username, twitter_username, twitter_password):
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(storage_state="auth.json")
         page = await context.new_page()
 
-        await page.goto("https://x.com/MetroCDMX")
+        # await page.goto("https://x.com/MetroCDMX")
+        await page.goto("https://x.com/TepalYael79389")
 
         # # Inicia sesión en Twitter
         # await login_to_twitter(page, twitter_username, twitter_password)
@@ -45,17 +63,8 @@ async def fetch_recent_tweets(username, twitter_username, twitter_password):
             }
         ''')
 
-        latest_tweet = await page.query_selector('article')
-        print(latest_tweet)
-        replies = []
-        if latest_tweet:
-            await latest_tweet.click()
-            replies = await page.query_selector_all('article')
-
-
         await browser.close()
-        # return replies
-        return (tweets, replies)
+        return tweets
 
 # Reemplaza 'usuario_de_twitter' con el nombre de usuario de Twitter que deseas consultar
 target_username = 'MetroCDMX'
@@ -65,4 +74,5 @@ twitter_username = 'TepalYael79389'
 twitter_password = 'Hans66306713333'
 
 tweets = asyncio.run(fetch_recent_tweets(target_username, twitter_username, twitter_password))
-print(tweets)
+for tweet in tweets:
+    print(tweet, "\n", ai_guess_delay(tweet))

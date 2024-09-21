@@ -1,7 +1,7 @@
 import sqlite3
 import os
 from graph import *
-
+from user import *
 def conexion_base_de_datos() -> sqlite3.Connection:
     # Si la base de datos no existe, llamar al método crear_base_de_datos
     if not os.path.exists('metro.db'):
@@ -100,7 +100,25 @@ def get_linea_id(conn, nombre) -> int:
     cursor.execute("SELECT id FROM lineas WHERE nombre = ?", (nombre,))
     return cursor.fetchone()[0]
 
+#query de estacion por el nombre y obtener el primer id que encuentre referente al nombre de la estación
+def get_estacion_id(conn, nombre) -> int:
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM estaciones WHERE nombre = ?", (nombre,))
+    return cursor.fetchone()[0]
 
+#input, horario en la que se toma la ruta, los dias en la que lo toma, la estacion de destino.
+#funcion para agregar una ruta a la tabla rutas()
+def agregar_ruta(conn,email, hora, dia_semana, nombre_estacion) -> None:
+    cursor = conn.cursor()
+    
+    usuario = get_user_id(conn, email)
+    destino = get_estacion_id(conn, nombre_estacion)
+    
+    cursor.execute("INSERT INTO rutas (usuario, hora, dia_semana, destino) VALUES (?, ?, ?, ?)", (usuario, hora, dia_semana, destino))
+    conn.commit()    
+
+#funcion para agregar una ruta a la tabla rutas()
 # Ejemplo de uso
 #conn = conexion_base_de_datos()
 #imprimir_grafo(conn)
+

@@ -1,9 +1,14 @@
 import streamlit as st
-
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../backend'))
+import db
+import user
 # Hardcoded user credentials (you can replace this with a database or a more secure method)
 valid_email = "admin"
 valid_password = "admin"
 
+conn = conexion_base_de_datos()
 # Initialize session state variables
 if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
@@ -47,9 +52,7 @@ st.markdown("# JELLYWAY")
 st.sidebar.header("Map")
 
 def login(username, password):
-    if username == valid_email and password == valid_password:
-        return True
-    return False
+    return check_login(conn, username, password)
 
 def login_page():
     st.markdown("## Login")

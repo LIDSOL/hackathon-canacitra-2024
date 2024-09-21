@@ -34,3 +34,23 @@ st.markdown("""
 st.markdown("# JELLYWAY")
 st.sidebar.header("Settings")
 
+username = "johndoe"
+email = "johndoe@example.com"
+password = "password123"
+
+# Create form for user info
+with st.form(key='user_info_form'):
+    st.markdown("## User information and modifications")
+    username = st.text_input("Username      (Actual: " + username + ")")
+    email = st.text_input("Email      (Actual: " + email + ")")
+    password = st.text_input("Password")
+    
+    # Submit button
+    submit_button = st.form_submit_button(label='Update Info')
+
+# Handle form submission
+if submit_button:
+    new_email = username
+    new_email = email
+    new_passwd = password
+    st.success("User information updated successfully!")

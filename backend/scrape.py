@@ -93,3 +93,17 @@ for tweet in tweets:
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM conexiones")
     print('HUH', cursor.fetchall())
+    
+    #inserta rn la base de datos metro.deb los tweets en la tabla reporte_lineas con el hash del tweet y el contenido del tweet
+    #cursor.execute("INSERT INTO reporte_lineas (hash, contenido) VALUES (?, ?)", (tweethash, tweet["content"]))
+    #conn.commit()
+    #conn.close()
+    
+    #agregar usuarios a la base de datos desde el fronted
+    #cursor.execute("INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)", (nombre, correo, contraseña))
+    #conn.commit()
+    #conn.close()
+    #cursor.execute("SELECT * FROM usuarios")
+    #print(cursor.fetchall())
+    
+    

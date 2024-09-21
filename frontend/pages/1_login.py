@@ -1,9 +1,13 @@
 import streamlit as st
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../backend'))
-import db
-import user
+
+# Agregar el directorio backend al sys.path
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../backend'))
+
+# Ahora puedes intentar importar los módulos
+from  db import *  # o from backend.db import *
+from user import *  # o from backend.user import *
 # Hardcoded user credentials (you can replace this with a database or a more secure method)
 valid_email = "admin"
 valid_password = "admin"

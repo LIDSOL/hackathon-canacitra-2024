@@ -142,15 +142,12 @@ def encontrar_rutas(estacion_inicio, estacion_fin, grafo):
         return None, None
 
 def stringificar_ruta(conn, ruta):
-    s = ""
+    s = []
 
     estaciones_info = obtener_estaciones_info(conn)
 
     for estacion in ruta:
-        s += estaciones_info[estacion][0] + " -> "
-
-    # Quitar el ultimo " -> "
-    s = s[:-4]
+        s.append((estaciones_info[estacion][0], estaciones_info[estacion][1]))
 
     return s
 

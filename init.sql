@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS reportes_usuario (
     linea INTEGER NOT NULL,
     fecha DATETIME NOT NULL,
     FOREIGN KEY (usuario) REFERENCES usuarios(id),
-    FOREIGN KEY (linea) REFERENCES lineas(id),
+    FOREIGN KEY (linea) REFERENCES lineas(id)
 );
 
 -- Crear tabla de usuarios

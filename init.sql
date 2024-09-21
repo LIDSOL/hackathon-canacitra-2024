@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS reportes_usuario (
     id INTEGER PRIMARY KEY,
     usuario INTEGER NOT NULL,
     linea INTEGER NOT NULL,
-    fecha DATETIME NOT NULL,
+    fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario) REFERENCES usuarios(id),
     FOREIGN KEY (linea) REFERENCES lineas(id)
 );

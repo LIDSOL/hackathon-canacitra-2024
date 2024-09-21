@@ -1,8 +1,8 @@
 from openai import OpenAI as ai
 
 # INPUT: "Natural language message of a subway delay"
-# OUTPUT: "JSON object with the subway lines and the estimated delay in minutes"
-def ai_guess_delay(message) -> str:
+# OUTPUT: "list with the subway lines and the estimated delay in minutes"
+def ai_guess_delay(message) -> list:
     client = ai()
 
     completion = client.chat.completions.create(
